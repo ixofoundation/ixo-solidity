@@ -1,0 +1,31 @@
+{
+  "name": "ixo-solidity",
+  "version": "1.0.0",
+  "description": "Solidity contracts for ixo protocol",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ixofoundation/ixo-solidity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ixofoundation/ixo-solidity/issues"
+  },
+  "homepage": "https://github.com/ixofoundation/ixo-solidity#readme",
+  "dependencies": {
+    "zeppelin-solidity": "1.7.0"
+  },
+  "devDependencies": {
+    "dotenv": "^5.0.1",
+    "ethereumjs-wallet": "^0.6.0",
+    "truffle-wallet-provider": "0.0.5"
+  }
+}
