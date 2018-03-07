@@ -1,4 +1,6 @@
 require('dotenv').config();
+require('babel-register');
+require('babel-polyfill');
 const Web3 = require("web3");
 const web3 = new Web3();
 const WalletProvider = require("truffle-wallet-provider");
