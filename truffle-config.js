@@ -17,7 +17,7 @@ var ropstenProvider = new WalletProvider(ropstenWallet, "https://ropsten.infura.
 
 module.exports = {
   networks: {
-    development: {
+    rpc: {
       host: "localhost",
       port: 8545,
       network_id: "*" // Match any network id
