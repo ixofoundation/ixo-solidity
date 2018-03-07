@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/ixofoundation/ixo-solidity#readme",
   "dependencies": {
+    "truffle": "^4.1.0",
     "zeppelin-solidity": "1.7.0"
   },
   "devDependencies": {
