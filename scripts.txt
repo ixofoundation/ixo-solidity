@@ -1,0 +1,28 @@
+// push up contacts to local network
+zos push --from $OWNER --network local
+
+// create token contract
+zos create IxoToken --init initialize --args $OWNER  --network local
+export TOKENCONTRACT=<address>
+echo "IxoToken.at(\"$TOKENCONTRACT\").setCap(1000000000)" | npx truffle console --network local
+echo "IxoToken.at(\"$TOKENCONTRACT\").cap()" | npx truffle console --network local
+echo "IxoToken.at(\"$TOKENCONTRACT\").symbol()" | npx truffle console --network local
+echo "IxoToken.at(\"$TOKENCONTRACT\").totalSupply()" | npx truffle console --network local
+echo "IxoToken.at(\"$TOKENCONTRACT\").mint(\"0xa0fdff3863cdd9a37007532b475c45da065377ef\", 1000000)" | npx truffle console --network local
+
+// create ContractRegistry
+zos create ContractRegistry --from $OWNER --network local --init --args $OWNER
+export CONTRACTADDRESS=<address>
+echo "ContractRegistry.at(\"$CONTRACTADDRESS\").setToken(\"$TOKENCONTRACT\")" | npx truffle console --network local
+
+echo "ContractRegistry.at(\"$CONTRACTADDRESS\").fund(\"did:ixo:123456789\",20)" | npx truffle console --network local  
+echo "ContractRegistry.at(\"$CONTRACTADDRESS\").getStake(\"did:ixo:123456789\")" | npx truffle console --network local 
+
+
+zos create ValidatorGuard --from $OWNER --network local --init  --args $OWNER
+export VALIDATORGUARD=<address>
+echo "ValidatorGuard.at(\"$VALIDATORGUARD\").addMember(\"$OWNER\")" | npx truffle console --network local
+echo "ValidatorGuard.at(\"$VALIDATORGUARD\").setQuorum(1)" | npx truffle console --network local
+echo "ContractRegistry.at(\"$CONTRACTADDRESS\").setValidatorGuard(\"$VALIDATORGUARD\")" | npx truffle console --network local
+
+echo "ContractRegistry.at(\"$CONTRACTADDRESS\").withdraw(\"1234\",\"did:ixo:123456789\",1,\"$OWNER\")" | npx truffle console --network local
