@@ -14,7 +14,7 @@ echo "IxoToken.at(\"$TOKENCONTRACT\").mint(\"0xa0fdff3863cdd9a37007532b475c45da0
 zos create ContractRegistry --from $OWNER --network local --init --args $OWNER
 export CONTRACTADDRESS=<address>
 echo "ContractRegistry.at(\"$CONTRACTADDRESS\").setToken(\"$TOKENCONTRACT\")" | npx truffle console --network local
-
+echo "IxoToken.at(\"$TOKENCONTRACT\").setContractREgistry(\"$CONTRACTADDRESS\")" | npx truffle console --network local
 echo "ContractRegistry.at(\"$CONTRACTADDRESS\").fund(\"did:ixo:123456789\",20)" | npx truffle console --network local  
 echo "ContractRegistry.at(\"$CONTRACTADDRESS\").getStake(\"did:ixo:123456789\")" | npx truffle console --network local 
 
