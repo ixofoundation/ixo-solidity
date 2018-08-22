@@ -1,12 +1,21 @@
 pragma solidity ^0.4.24;
 
 import "../utils/Ownable.sol";
-import "./ProjectWallet.sol";
+import "./ProjectWalletFactory.sol";
 import "../token/IxoERC20Token.sol";
 
 contract ProjectWalletRegistry is Ownable {
 
-    mapping(bytes32 => address) public wallets;
+    address private factory;
+    mapping(bytes32 => address) private wallets;
+
+    constructor(address _factory) public {
+        factory = _factory;
+    }
+
+    function setFactory(address _factory) public onlyOwner {
+        factory = _factory;
+    }
 
     function ensureWallet(bytes32 _name) public returns (address) {
         if(wallets[_name] == address(0)) {
@@ -21,7 +30,7 @@ contract ProjectWalletRegistry is Ownable {
     }
 
     function _createWallet (bytes32 _name) public { //internal {
-        ProjectWallet newWallet = new ProjectWallet(_name);
+        address newWallet = ProjectWalletFactory(factory).createWallet(_name);
         wallets[_name] = newWallet;
     } 
 }

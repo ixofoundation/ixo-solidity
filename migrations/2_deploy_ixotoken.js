@@ -1,6 +1,8 @@
 var SafeMath = artifacts.require("./utils/SafeMath");
 var Ownable = artifacts.require("./utils/Ownable");
 var IxoERC20Token = artifacts.require("./token/IxoERC20Token");
+var AuthContract = artifacts.require("./auth/AuthContract");
+var ProjectWalletFactory = artifacts.require("./project/ProjectWalletFactory");
 var ProjectWalletRegistry = artifacts.require("./project/ProjectWalletRegistry");
 
 module.exports = function(deployer) {
@@ -10,7 +12,11 @@ module.exports = function(deployer) {
   deployer.link(Ownable, [IxoERC20Token, ProjectWalletRegistry]);
   // set the deployed instance of IxoERC20Token in constructor of the ProjectWalletRegistry
   deployer.deploy(IxoERC20Token).then(function() {
-    return deployer.deploy(ProjectWalletRegistry, IxoERC20Token.address);
+    return deployer.deploy(AuthContract);
+  }).then(function() {
+    return deployer.deploy(ProjectWalletFactory, IxoERC20Token.address, AuthContract.address);
+  }).then(function() {
+    return deployer.deploy(ProjectWalletRegistry, ProjectWalletFactory.address);
   });
 
 };
