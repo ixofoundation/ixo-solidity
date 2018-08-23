@@ -94,10 +94,22 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
             const wallet = new ProjectWallet(walletAddress);
     
             await this.token.transfer(walletAddress, 100, {from: owner});
-            assertRevert(await wallet.increasePayoutApproval(recipient, 100, {from: owner}));
+            await assertRevert(wallet.increasePayoutApproval(recipient, 100, {from: owner}));
            });
         });
 
+        it('approve payout transfer from too much', async function () {
+  
+            await this.registry.ensureWallet(PROJECT_DID);
+            const walletAddress = await this.registry.walletOf(PROJECT_DID);
+    
+            const wallet = new ProjectWallet(walletAddress);
+    
+            await this.token.transfer(walletAddress, 100, {from: owner});
+            await wallet.increasePayoutApproval(recipient, 100, {from: authoriser});
+            await this.token.transferFrom(walletAddress, recipient, 60, {from: recipient});
+            await assertRevert(this.token.transferFrom(walletAddress, recipient, 50, {from: recipient}));
+        });
 
 
 });
