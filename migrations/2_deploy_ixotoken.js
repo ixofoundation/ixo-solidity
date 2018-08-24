@@ -14,9 +14,9 @@ module.exports = function(deployer) {
   deployer.deploy(IxoERC20Token).then(function() {
     return deployer.deploy(AuthContract);
   }).then(function() {
-    return deployer.deploy(ProjectWalletFactory, IxoERC20Token.address, AuthContract.address);
+    return deployer.deploy(ProjectWalletFactory);
   }).then(function() {
-    return deployer.deploy(ProjectWalletRegistry, ProjectWalletFactory.address);
+    return deployer.deploy(ProjectWalletRegistry, IxoERC20Token.address, AuthContract.address, ProjectWalletFactory.address);
   });
 
 };

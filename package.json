@@ -23,7 +23,8 @@
   "homepage": "https://github.com/ixofoundation/ixo-solidity#readme",
   "dependencies": {
     "truffle": "^4.1.0",
-    "zeppelin-solidity": "1.7.0"
+    "zeppelin-solidity": "1.7.0",
+    "ethereumjs-util": "^5.2.0"
   },
   "devDependencies": {
     "dotenv": "^5.0.1",

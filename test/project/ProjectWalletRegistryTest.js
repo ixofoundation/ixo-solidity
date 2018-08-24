@@ -13,8 +13,8 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
         await this.token.setMinter(minter);
         const minted = await this.token.mint(owner, 200, {from: minter});
 
-        this.factory = await ProjectWalletFactory.new(this.token.address, authoriser);
-        this.registry = await ProjectWalletRegistry.new(this.factory.address);
+        this.factory = await ProjectWalletFactory.new();
+        this.registry = await ProjectWalletRegistry.new(this.token.address, authoriser, this.factory.address);
 
     });
 
@@ -61,30 +61,12 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
           const wallet = new ProjectWallet(walletAddress);
 
           await this.token.transfer(walletAddress, 100, {from: owner});
-          await wallet.increasePayoutApproval(recipient, 100, {from: authoriser});
-          await this.token.transferFrom(walletAddress, recipient, 60, {from: recipient});
+          await wallet.transfer(recipient, 60, {from: authoriser});
           const walletBalance = await this.token.balanceOf(walletAddress);
           assert.equal(walletBalance, 40);
           const recipientBalance = await this.token.balanceOf(recipient);
           assert.equal(recipientBalance, 60);
         });
-
-        it('approve payout multiple payouts', async function () {
-  
-            await this.registry.ensureWallet(PROJECT_DID);
-            const walletAddress = await this.registry.walletOf(PROJECT_DID);
-   
-            const wallet = new ProjectWallet(walletAddress);
-  
-            await this.token.transfer(walletAddress, 100, {from: owner});
-            await wallet.increasePayoutApproval(recipient, 100, {from: authoriser});
-            await this.token.transferFrom(walletAddress, recipient, 60, {from: recipient});
-            await this.token.transferFrom(walletAddress, recipient, 40, {from: recipient});
-            const walletBalance = await this.token.balanceOf(walletAddress);
-            assert.equal(walletBalance, 0);
-            const recipientBalance = await this.token.balanceOf(recipient);
-            assert.equal(recipientBalance, 100);
-          });
 
           it('approve payout not authoriser', async function () {
   
@@ -94,22 +76,9 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
             const wallet = new ProjectWallet(walletAddress);
     
             await this.token.transfer(walletAddress, 100, {from: owner});
-            await assertRevert(wallet.increasePayoutApproval(recipient, 100, {from: owner}));
+            await assertRevert(wallet.transfer(recipient, 100, {from: owner}));
            });
-        });
 
-        it('approve payout transfer from too much', async function () {
-  
-            await this.registry.ensureWallet(PROJECT_DID);
-            const walletAddress = await this.registry.walletOf(PROJECT_DID);
-    
-            const wallet = new ProjectWallet(walletAddress);
-    
-            await this.token.transfer(walletAddress, 100, {from: owner});
-            await wallet.increasePayoutApproval(recipient, 100, {from: authoriser});
-            await this.token.transferFrom(walletAddress, recipient, 60, {from: recipient});
-            await assertRevert(this.token.transferFrom(walletAddress, recipient, 50, {from: recipient}));
-        });
-
+    });
 
 });
