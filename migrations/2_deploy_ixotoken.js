@@ -12,7 +12,7 @@ module.exports = function(deployer) {
   deployer.link(Ownable, [IxoERC20Token, ProjectWalletRegistry]);
   // set the deployed instance of IxoERC20Token in constructor of the ProjectWalletRegistry
   deployer.deploy(IxoERC20Token).then(function() {
-    return deployer.deploy(AuthContract);
+    return deployer.deploy(AuthContract, [], 0);
   }).then(function() {
     return deployer.deploy(ProjectWalletFactory);
   }).then(function() {

@@ -44,11 +44,12 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
 
         await this.registry.ensureWallet(PROJECT_DID);
         const wallet = await this.registry.walletOf(PROJECT_DID);
+        const startBalance = await this.token.balanceOf(wallet);
 
         this.token.transfer(wallet, 100, {from: owner});
         const walletBalance = await this.token.balanceOf(wallet);
 
-        assert.equal(walletBalance, 100);
+        assert.equal(walletBalance.minus(startBalance), 100);
       });
     });
 
@@ -59,13 +60,15 @@ contract('ProjectWalletRegistryTest', function ([_, owner, minter, authoriser, r
           const walletAddress = await this.registry.walletOf(PROJECT_DID);
  
           const wallet = new ProjectWallet(walletAddress);
+          const startBalance = await this.token.balanceOf(walletAddress);
+          const startRecipientBalance = await this.token.balanceOf(recipient);
 
           await this.token.transfer(walletAddress, 100, {from: owner});
           await wallet.transfer(recipient, 60, {from: authoriser});
           const walletBalance = await this.token.balanceOf(walletAddress);
-          assert.equal(walletBalance, 40);
+          assert.equal(walletBalance.minus(startBalance), 40);
           const recipientBalance = await this.token.balanceOf(recipient);
-          assert.equal(recipientBalance, 60);
+          assert.equal(recipientBalance.minus(startRecipientBalance), 60);
         });
 
           it('approve payout not authoriser', async function () {
