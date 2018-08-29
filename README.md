@@ -40,6 +40,8 @@ This contract takes signed requests from its configured members to transfer toke
 `truffle test --network development`
 
 ## Ropsten Contracts
+`truffle migrate --network ropsten`
+
 ```Running migration: 2_deploy_ixotoken.js
   Deploying SafeMath...
   ... 0x2a33b611e028fbf6b8f3f1e092e9c16b46458301ff5c12c8dceb72188e0a7193
