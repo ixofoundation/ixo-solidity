@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "./ProjectWallet.sol";
-import "../token/IxoERC20Token.sol";
+import "../token/ERC20.sol";
 
 contract BasicProjectWallet is ProjectWallet {
 
@@ -41,7 +41,7 @@ contract BasicProjectWallet is ProjectWallet {
     public onlyAuthoriser
     returns (bool)
     {
-        IxoERC20Token(token).transfer(_receiver, _amt);
+        ERC20(token).transfer(_receiver, _amt);
     }
 
 }
