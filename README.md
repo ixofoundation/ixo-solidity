@@ -59,9 +59,7 @@ This contract takes signed requests from its configured members to transfer toke
   Deploying ProjectWalletRegistry...
   ... 0x6503e038d04bf24e8af8e048c145f0121b709d24d48ac3abb0b86a53a374616d
   ProjectWalletRegistry: 0xa8bfa5b0b8d16cad654d84ce5cf09fa5e8ecc6f
-Saving successful migration to network...```
-
+Saving successful migration to network...
   ... 0x2060e8008b9f51122a0a6f9b4f0f4f28dd7e5d0ec446d107c24d9dc76c31c31c
-
-Saving artifacts...
+Saving artifacts...```
 
