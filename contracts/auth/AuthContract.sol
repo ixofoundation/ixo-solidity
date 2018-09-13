@@ -8,7 +8,7 @@ contract AuthContract is Ownable {
     address[]  public  members;
     uint       public  quorum;
 
-    mapping (uint => mapping (address => bool)) public  confirmedBy;
+    mapping (bytes32 => mapping (address => bool)) public  confirmedBy;
     mapping (address => bool) public  isMember;
     mapping (bytes32 => Action) public actions;
 
@@ -63,16 +63,28 @@ contract AuthContract is Ownable {
         uint256  _amt
     ) public onlyMembers returns (bool) {
         require(_tx != 0, "Invalid transaction id");
+        if(actions[_tx].triggered == true) {
+            return true;
+        }
         require(_target != address(0), "Invalid target");
         require(_sender != address(0), "Invalid sender");
         require(_receiver != address(0), "Invalid receiver");
         require(_amt >= 0, "Invalid amount");
-        actions[_tx].target = _target;
-        actions[_tx].sender = _sender;
-        actions[_tx].receiver = _receiver;
-        actions[_tx].amt = _amt;
-        actions[_tx].triggered = false;
+        require(confirmedBy[_tx][msg.sender] == false, "Cannot confirm same transaction twice");
+        if(actions[_tx].confirmations == 0) {
+            actions[_tx].target = _target;
+            actions[_tx].sender = _sender;
+            actions[_tx].receiver = _receiver;
+            actions[_tx].amt = _amt;
+            actions[_tx].triggered = false;
+        } else {
+            require(actions[_tx].target == _target, "Invalid transaction id");
+            require(actions[_tx].sender == _sender, "Invalid transaction id");
+            require(actions[_tx].receiver == _receiver, "Invalid transaction id");
+            require(actions[_tx].amt == _amt, "Invalid transaction id");
+        }
         actions[_tx].confirmations = actions[_tx].confirmations + 1;
+        confirmedBy[_tx][msg.sender] = true;
 
         emit Confirmed(_tx, msg.sender);
 
