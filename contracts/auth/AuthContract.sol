@@ -29,7 +29,11 @@ contract AuthContract is Ownable {
         members = _members;
         quorum = _quorum;
 
-        for (uint i = 0; i < members.length; i++) {
+       _setIsMember();
+    }
+    
+    function _setIsMember() internal {
+         for (uint i = 0; i < members.length; i++) {
             isMember[members[i]] = true;
         }
     }
@@ -54,7 +58,12 @@ contract AuthContract is Ownable {
     function setQuorum(uint _quorum) public onlyOwner {
         quorum = _quorum;
     }
-
+    
+    function addMember(address _member) public onlyOwner {
+        members.push(_member);
+       _setIsMember();
+    }
+    
     function validate(
         bytes32  _tx,
         address  _target,
