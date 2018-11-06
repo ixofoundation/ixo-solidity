@@ -31,7 +31,8 @@ contract AuthContract is Ownable {
         quorum = _quorum;
 
         for (uint i = 0; i < members.length; i++) {
-            _changeMemberStatus(members[i], true);        }
+            _changeMemberStatus(members[i], true);
+        }
     }
 
     /**
