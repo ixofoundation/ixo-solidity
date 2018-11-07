@@ -11,13 +11,12 @@ contract AuthContract is Ownable {
     mapping (bytes32 => mapping (address => bool)) public  confirmedBy;
     mapping (address => bool) public  isMember;
     mapping (bytes32 => Action) public actions;
-
+  
     struct Action {
         address  target;
         address  sender;
         address  receiver;
         uint256  amt;
-
         uint     confirmations;
         bool     triggered;
     }
@@ -55,7 +54,7 @@ contract AuthContract is Ownable {
     function setQuorum(uint _quorum) public onlyOwner {
         quorum = _quorum;
     }
-
+    
     function addMember(address _member) public onlyOwner {
         if(!isMember[_member]){
             members.push(_member);
