@@ -5,8 +5,8 @@ import "../project/ProjectWalletAuthoriser.sol";
 
 contract AuthContract is Ownable {
 
-    address[]  public  members;
     uint       public  quorum;
+    uint       public  memberCount;
 
     mapping (bytes32 => mapping (address => bool)) public  confirmedBy;
     mapping (address => bool) public  isMember;
@@ -26,11 +26,11 @@ contract AuthContract is Ownable {
     event MemberExists (address member);
 
     constructor(address[] _members, uint _quorum) public {
-        members = _members;
+        memberCount = _members.length;
         quorum = _quorum;
 
-        for (uint i = 0; i < members.length; i++) {
-            _changeMemberStatus(members[i], true);
+        for (uint i = 0; i < memberCount; i++) {
+            _changeMemberStatus(_members[i], true);
         }
     }
 
@@ -47,32 +47,28 @@ contract AuthContract is Ownable {
         _;
     }
 
-    function memberCount() public view returns (uint) {
-        return members.length;
-    }
-
     function setQuorum(uint _quorum) public onlyOwner {
         quorum = _quorum;
     }
     
     function addMember(address _member) public onlyOwner {
         if(!isMember[_member]){
-            members.push(_member);
+            memberCount++;
             _changeMemberStatus(_member, true);
         } else {
             emit MemberExists(_member);
         }
-       
     }
     
     function removeMember(address _member) public onlyOwner {
+        memberCount--;
         _changeMemberStatus(_member, false);
     }
     
     function _changeMemberStatus(address _member, bool _status) internal {
         isMember[_member] = _status;
     }
-
+    
     function validate(
         bytes32  _tx,
         address  _target,
@@ -118,5 +114,4 @@ contract AuthContract is Ownable {
         actions[_tx].triggered = true;
         ProjectWalletAuthoriser(actions[_tx].target).transfer(actions[_tx].sender, actions[_tx].receiver, actions[_tx].amt);
     }
-
 }
