@@ -24,7 +24,7 @@ contract AuthContract is Ownable {
     event Confirmed  (bytes32 id, address member);
     event Triggered  (bytes32 id);
     event MemberExists (address member);
-    event MemeberDoesNotExist (address member);
+    event MemberDoesNotExist (address member);
 
     constructor(address[] _members, uint _quorum) public {
         memberCount = _members.length;
@@ -66,7 +66,7 @@ contract AuthContract is Ownable {
             _setMemberStatus(_member, false);
             memberCount--;
         } else {
-             emit MemeberDoesNotExist(_member);
+             emit MemberDoesNotExist(_member);
         }
     }
     
