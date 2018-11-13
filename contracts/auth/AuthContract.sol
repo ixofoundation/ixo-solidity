@@ -24,13 +24,14 @@ contract AuthContract is Ownable {
     event Confirmed  (bytes32 id, address member);
     event Triggered  (bytes32 id);
     event MemberExists (address member);
+    event MemeberDoesNotExist (address member);
 
     constructor(address[] _members, uint _quorum) public {
         memberCount = _members.length;
         quorum = _quorum;
 
         for (uint i = 0; i < memberCount; i++) {
-            _changeMemberStatus(_members[i], true);
+            _setMemberStatus(_members[i], true);
         }
     }
 
@@ -52,20 +53,24 @@ contract AuthContract is Ownable {
     }
     
     function addMember(address _member) public onlyOwner {
-        if(!isMember[_member]){
+        if(!isMember[_member]) {
+            _setMemberStatus(_member, true);
             memberCount++;
-            _changeMemberStatus(_member, true);
         } else {
             emit MemberExists(_member);
         }
     }
     
     function removeMember(address _member) public onlyOwner {
-        memberCount--;
-        _changeMemberStatus(_member, false);
+        if(isMember[_member]) {
+            _setMemberStatus(_member, false);
+            memberCount--;
+        } else {
+             emit MemeberDoesNotExist(_member);
+        }
     }
     
-    function _changeMemberStatus(address _member, bool _status) internal {
+    function _setMemberStatus(address _member, bool _status) internal {
         isMember[_member] = _status;
     }
     
