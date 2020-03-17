@@ -3,7 +3,7 @@ Solidity contracts for ixo protocol
 
 ## Contracts
 
-The Ixo smart contracts facilitate the creation of ProjectWalles and the authorisation of payments from the project wallet after they have been validated by the ixo blockchain nodes. 
+The Ixo smart contracts facilitate the creation of ProjectWallets and the authorisation of payments from the project wallet after they have been validated by the ixo blockchain nodes. 
 
 ![SmartContracts](./SmartContracts.png)
 
@@ -14,16 +14,17 @@ Symbol: IXO
 
 Decimals: 8
 
-Cap: 10 bil Tokens
+Cap: 10 billion Tokens
 
 ### ProjectWallet
-This is an interface for the project wallet.  It has one methor to transfer IXO tokens from this wallet to another wallet.
+This is an interface for the project wallet.  It has one method to transfer IXO tokens from this wallet to another wallet.
 ### BasicProjectWallet
 This is a basic implementation of the ProjectWallet.  Over time ProjectWallets would be able to contain other token types.
 ### ProjectWalletFactory
-This smart contract is responsilble for creating ProjectWallet implementations  The current one created BasicProjectWallets
+This smart contract is responsilble for creating ProjectWallet implementations. The current one created is BasicProjectWallet
 ### ProjectWalletRegistry
-The ProjectWalletRegistry contains a mapping of projectDID to their ProjectWallet.  At any time the ProjectWallet associated to a project can be found here buy looking up the projectDID.  The projectDID is a 32 byte hex representation of the project DID without the 'did:ixo:' portion.
+The ProjectWalletRegistry contains a mapping of projectDID to their ProjectWallet.  At any time the ProjectWallet associated to a project can be found here buy looking up the projectDID. 
+The projectDID is a 32 byte hex representation of the project DID without the 'did:ixo:' portion.
 ### ProjectWalletAuthoriser
 This contract is authorised to transfer funds out of the ProjectWallet.
 ### AuthContract
